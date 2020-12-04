@@ -52,3 +52,32 @@ func Convert(t string, v string) (i interface{}, e error) {
 
 	return
 }
+
+func InterfaceToFloat64(v interface{}) float64 {
+	switch t := v.(type) {
+	case int:
+		return float64(t)
+	case int8:
+		return float64(t)
+	case int16:
+		return float64(t)
+	case int32:
+		return float64(t)
+
+	case uint:
+		return float64(t)
+	case uint8:
+		return float64(t)
+	case uint16:
+		return float64(t)
+	case uint32:
+		return float64(t)
+
+	case float32:
+		return float64(t)
+	case float64:
+		return t
+	}
+
+	return 0
+}
