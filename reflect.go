@@ -51,12 +51,16 @@ func GetField(d interface{}, path string) interface{} {
 
 		if i, err := strconv.Atoi(s); err == nil {
 			v = v.Index(i)
-		} else if v.Type().Kind() == reflect.Struct {
+		} else if v.Kind() == reflect.Struct {
 			v = v.FieldByName(s)
 		}
 	}
 
-	switch v.Type().Kind() {
+	if v.Kind() == reflect.Invalid {
+		return nil
+	}
+
+	switch v.Kind() {
 	case reflect.String:
 		return v.String()
 	case reflect.Int, reflect.Int32, reflect.Int64:
