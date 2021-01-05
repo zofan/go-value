@@ -32,6 +32,8 @@ func Convert(t string, v string) (i interface{}, e error) {
 		i = int16(i.(int64))
 	case `int32`:
 		i = int32(i.(int64))
+	case `int64`:
+		i = i.(int64)
 
 	case `uint`:
 		i = uint(i.(uint64))
@@ -41,6 +43,8 @@ func Convert(t string, v string) (i interface{}, e error) {
 		i = uint16(i.(uint64))
 	case `uint32`:
 		i = uint32(i.(uint64))
+	case `uint64`:
+		i = i.(uint64)
 
 	case `rune`:
 		i = rune(i.(int64))
@@ -63,6 +67,8 @@ func InterfaceToFloat64(v interface{}) float64 {
 		return float64(t)
 	case int32:
 		return float64(t)
+	case int64:
+		return float64(t)
 
 	case uint:
 		return float64(t)
@@ -71,6 +77,8 @@ func InterfaceToFloat64(v interface{}) float64 {
 	case uint16:
 		return float64(t)
 	case uint32:
+		return float64(t)
+	case uint64:
 		return float64(t)
 
 	case float32:
