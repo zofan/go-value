@@ -2,7 +2,6 @@ package value
 
 import (
 	"strconv"
-	"strings"
 )
 
 func Convert(t string, v string) (i interface{}, e error) {
@@ -19,8 +18,6 @@ func Convert(t string, v string) (i interface{}, e error) {
 		i = v
 	case `[]byte`:
 		i = []byte(v)
-	case `[]string`:
-		i = strings.Split(v[1:], v[0:1])
 	}
 
 	switch t {
