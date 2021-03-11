@@ -4,6 +4,35 @@ import (
 	"strconv"
 )
 
+func ToInt(v string) int64 {
+	i, _ := strconv.ParseInt(v, 10, 64)
+	return i
+}
+
+func ToFloat(v string) float64 {
+	f, _ := strconv.ParseFloat(v, 64)
+	return f
+}
+
+func ToBool(v string) bool {
+	switch v {
+	case `1`:
+		return true
+	case `y`, `Y`:
+		return true
+	case `true`, `True`, `TRUE`:
+		return true
+	case `yes`, `Yes`, `YES`:
+		return true
+	case `accept`, `Accept`, `ACCEPT`:
+		return true
+	case `ok`, `Ok`, `OK`:
+		return true
+	default:
+		return false
+	}
+}
+
 func Convert(t string, v string) (i interface{}, e error) {
 	switch t {
 	case `int`, `int8`, `int16`, `int32`, `int64`, `rune`:
@@ -52,37 +81,4 @@ func Convert(t string, v string) (i interface{}, e error) {
 	}
 
 	return
-}
-
-func InterfaceToFloat64(v interface{}) float64 {
-	switch t := v.(type) {
-	case int:
-		return float64(t)
-	case int8:
-		return float64(t)
-	case int16:
-		return float64(t)
-	case int32:
-		return float64(t)
-	case int64:
-		return float64(t)
-
-	case uint:
-		return float64(t)
-	case uint8:
-		return float64(t)
-	case uint16:
-		return float64(t)
-	case uint32:
-		return float64(t)
-	case uint64:
-		return float64(t)
-
-	case float32:
-		return float64(t)
-	case float64:
-		return t
-	}
-
-	return 0
 }
