@@ -2,6 +2,7 @@ package value
 
 import (
 	"strconv"
+	"strings"
 )
 
 func ToInt(v string) int64 {
@@ -12,6 +13,13 @@ func ToInt(v string) int64 {
 func ToFloat(v string) float64 {
 	f, _ := strconv.ParseFloat(v, 64)
 	return f
+}
+
+func ToFloatSep(v, decimalSep, thousandsSep string) float64 {
+	v = strings.TrimSpace(v)
+	v = strings.ReplaceAll(v, thousandsSep, ``)
+	v = strings.ReplaceAll(v, decimalSep, `.`)
+	return ToFloat(v)
 }
 
 func ToBool(v string) bool {
@@ -81,4 +89,37 @@ func Convert(t string, v string) (i interface{}, e error) {
 	}
 
 	return
+}
+
+func InterfaceToFloat64(v interface{}) float64 {
+	switch t := v.(type) {
+	case int:
+		return float64(t)
+	case int8:
+		return float64(t)
+	case int16:
+		return float64(t)
+	case int32:
+		return float64(t)
+	case int64:
+		return float64(t)
+
+	case uint:
+		return float64(t)
+	case uint8:
+		return float64(t)
+	case uint16:
+		return float64(t)
+	case uint32:
+		return float64(t)
+	case uint64:
+		return float64(t)
+
+	case float32:
+		return float64(t)
+	case float64:
+		return t
+	}
+
+	return 0
 }
