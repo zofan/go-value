@@ -8,15 +8,22 @@ import (
 
 func SetField(d interface{}, value string, path string) bool {
 	v := reflect.ValueOf(d).Elem()
-	for _, s := range strings.Split(path, `.`) {
+	for _, key := range strings.Split(path, `.`) {
 		for v.Kind() == reflect.Ptr {
 			v = v.Elem()
 		}
 
-		if i, err := strconv.Atoi(s); err == nil {
-			v = v.Index(i)
-		} else if v.Type().Kind() == reflect.Struct {
-			v = v.FieldByName(s)
+		switch v.Type().Kind() {
+		case reflect.Struct:
+			v = v.FieldByName(key)
+		case reflect.Slice:
+			if i, err := strconv.Atoi(key); err == nil {
+				v = v.Index(i)
+			} else {
+				return false
+			}
+		case reflect.Map:
+			v = v.MapIndex(reflect.ValueOf(key))
 		}
 	}
 
@@ -40,7 +47,7 @@ func SetField(d interface{}, value string, path string) bool {
 
 func GetField(d interface{}, path string) interface{} {
 	v := reflect.ValueOf(d).Elem()
-	for _, s := range strings.Split(path, `.`) {
+	for _, key := range strings.Split(path, `.`) {
 		for v.Kind() == reflect.Ptr {
 			v = v.Elem()
 		}
@@ -49,10 +56,17 @@ func GetField(d interface{}, path string) interface{} {
 			return nil
 		}
 
-		if i, err := strconv.Atoi(s); err == nil {
-			v = v.Index(i)
-		} else if v.Kind() == reflect.Struct {
-			v = v.FieldByName(s)
+		switch v.Type().Kind() {
+		case reflect.Struct:
+			v = v.FieldByName(key)
+		case reflect.Slice:
+			if i, err := strconv.Atoi(key); err == nil {
+				v = v.Index(i)
+			} else {
+				return false
+			}
+		case reflect.Map:
+			v = v.MapIndex(reflect.ValueOf(key))
 		}
 	}
 
